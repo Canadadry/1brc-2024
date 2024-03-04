@@ -28,7 +28,7 @@ func TestCrc32(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		got := crc32(c.in)
+		got := crc32([]rune(c.in))
 		if got != c.want {
 			t.Errorf("crc32(%q) == %X, want %X", string(c.in), got, c.want)
 		}
