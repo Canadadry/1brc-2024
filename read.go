@@ -3,7 +3,6 @@ package main
 import (
 	"app/reader"
 	"fmt"
-	"io"
 	"os"
 )
 

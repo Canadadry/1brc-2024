@@ -10,10 +10,11 @@ import (
 
 type rsFunction func(io.Reader, io.Writer) error
 
+var rsFunctions = map[string]rsFunction{
+	"R1": R1,
+}
+
 func Read(version string, in io.Reader, out io.Writer) error {
-	rsFunctions := map[string]rsFunction{
-		"R1": R1,
-	}
 	rsFunc, ok := rsFunctions[version]
 	if !ok {
 		return fmt.Errorf("%s invalid function selection Please choose from R1 to R7", version)
