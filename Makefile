@@ -4,20 +4,20 @@
 default: help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-small:
+small: ## generate a small datafile for testing purpose
 	go run generator/gen.go 1000
 
-big:
+big: ## generate the one billion row file watch for the 13Go file coming :o
 	go run generator/gen.go 1000000000
 
-test:
+test: ## test if all impl pass the test
 	go test ./...
 
-bench:
+bench: ## bench all impl
 	go test -bench=. ./reader
 
-r1:
-	go run main.go R1
+r1: ## run impl R1
+	time go run main.go R1
 
