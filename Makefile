@@ -18,6 +18,9 @@ test: ## test if all impl pass the test
 bench: ## bench all impl
 	go test -bench=. ./reader
 
-r1: ## run impl R1
-	time go run main.go R1
+all: ## run all impl
+	go build -o app
+	time ./app R1
+	time ./app R2
+	time ./app R3
 
