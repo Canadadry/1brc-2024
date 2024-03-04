@@ -6,7 +6,16 @@ import (
 	"testing"
 )
 
-func TestR1(t *testing.T) {
+func TestReader(t *testing.T) {
+	for _, name := range []string{"R1"} {
+		t.Run(name, func(t *testing.T) {
+			testReader(t, name)
+		})
+	}
+}
+
+func testReader(t *testing.T, version string) {
+	t.Helper()
 	tests := map[string]struct {
 		input          string
 		expectedOutput string
@@ -42,7 +51,7 @@ func TestR1(t *testing.T) {
 			input := strings.NewReader(tc.input)
 			var output bytes.Buffer
 
-			err := R1(input, &output)
+			err := Read(version, input, &output)
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}

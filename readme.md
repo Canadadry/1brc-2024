@@ -44,7 +44,7 @@ This will generate a file named measurements.txt in the current directory, popul
 To execute a specific implementation against the generated dataset, use the main.go script with the desired function as an argument:
 
 ```bash
-go run read.go R1
+time go run read.go Rx
 ```
 
 Replace R1 with any function from R1 to R7 to test different implementations. Each function will process the measurements.txt file and output the results to stdout.
@@ -70,13 +70,7 @@ This will execute all defined unit tests, verifying the correctness of each impl
 The project includes benchmarks to measure the performance of each implementation. To run these benchmarks, use the go test command with the -bench flag. For example, to benchmark the R1 implementation, run:
 
 ```bash
-go test -bench=BenchmarkR1
-```
-
-To benchmark all implementations, you can use a regular expression with the -bench flag:
-
-```bash
-go test -bench=BenchmarkR
+go test -bench
 ```
 
 This will execute all benchmarks whose names match the regular expression, providing insights into the performance of each implementation across varying dataset sizes.
