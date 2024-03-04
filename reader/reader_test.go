@@ -3,12 +3,20 @@ package reader
 import (
 	"bytes"
 	"io/ioutil"
+	"sort"
 	"strings"
 	"testing"
 )
 
 func TestReader(t *testing.T) {
-	for version, impl := range rsFunctions {
+	keys := make([]string, 0, len(rsFunctions))
+	for name := range rsFunctions {
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+
+	for _, version := range keys {
+		impl := rsFunctions[version]
 		t.Run(version, func(t *testing.T) {
 			tests := map[string]struct {
 				input          string
@@ -16,6 +24,10 @@ func TestReader(t *testing.T) {
 			}{
 				"single station": {
 					input:          "StationA;20.5\nStationA;22.5\n",
+					expectedOutput: "{StationA=20.5/21.5/22.5}\n",
+				},
+				"single station with no line return at the end": {
+					input:          "StationA;20.5\nStationA;22.5",
 					expectedOutput: "{StationA=20.5/21.5/22.5}\n",
 				},
 				"multiple stations": {
@@ -50,7 +62,7 @@ func TestReader(t *testing.T) {
 					}
 
 					if gotOutput := output.String(); gotOutput != tc.expectedOutput {
-						t.Errorf("expected output %q, got %q", tc.expectedOutput, gotOutput)
+						t.Errorf("\nwant %q\n got %q\n", tc.expectedOutput, gotOutput)
 					}
 				})
 			}
@@ -64,8 +76,15 @@ func BenchmarkRead(b *testing.B) {
 		inputData += "StationA;1.1\nStationB;2.2\nStationC;3.3\nStationA;4.4\nStationB;5.5\n"
 	}
 
-	for name, impl := range rsFunctions {
-		b.Run(name, func(b *testing.B) {
+	keys := make([]string, 0, len(rsFunctions))
+	for name := range rsFunctions {
+		keys = append(keys, name)
+	}
+	sort.Strings(keys)
+
+	for _, version := range keys {
+		impl := rsFunctions[version]
+		b.Run(version, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				r := strings.NewReader(inputData)
 				w := ioutil.Discard
