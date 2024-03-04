@@ -27,6 +27,14 @@ func TestR1(t *testing.T) {
 			input:          "StationC;5.0\nStationA;3.5\nStationB;4.2\nStationA;2.5\nStationC;5.2\n",
 			expectedOutput: "{StationA=2.5/3.0/3.5, StationB=4.2/4.2/4.2, StationC=5.0/5.1/5.2}\n",
 		},
+		"one decimal digit": {
+			input:          "Station1;12.34\n",
+			expectedOutput: "{Station1=12.3/12.3/12.3}\n",
+		},
+		"positive and negative temperatures": {
+			input:          "Station1;-5.0\nStation2;3.5\nStation1;2.0\nStation2;-2.5\nStation3;0.0\n",
+			expectedOutput: "{Station1=-5.0/-1.5/2.0, Station2=-2.5/0.5/3.5, Station3=0.0/0.0/0.0}\n",
+		},
 	}
 
 	for name, tc := range tests {
