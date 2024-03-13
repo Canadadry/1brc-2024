@@ -12,6 +12,9 @@ var rsFunctions = map[string]rsFunction{
 	"R2":    R2,
 	"R2Bis": R2Bis,
 	"R3":    R3,
+	"R3Bis": R3Bis,
+	"BY1":   BY1,
+	"BY7":   BY7,
 }
 
 func Read(version string, in io.Reader, out io.Writer) error {
