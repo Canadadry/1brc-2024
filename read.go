@@ -4,13 +4,24 @@ import (
 	"app/reader"
 	"fmt"
 	"os"
+	"runtime/pprof"
 )
+
+var cpuProfile = "cpu.profil"
 
 func main() {
 	if len(os.Args) < 2 {
 		fmt.Println("Usage: program <R1-R7>")
 		os.Exit(1)
 	}
+
+	f, err := os.Create(cpuProfile)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+	pprof.StartCPUProfile(f)
+	defer pprof.StopCPUProfile()
 
 	file, err := os.Open("measurements.txt")
 	if err != nil {
