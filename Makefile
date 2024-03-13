@@ -14,11 +14,14 @@ bench: ## bench all impl
 
 all: ## run all impl
 	rm -f profile00*
+	rm -f profile_*
 	$(MAKE) initDocker
 	$(MAKE) measureDocker SAMPLE=1000000
 	$(MAKE) profilDocker READER=R1
 	$(MAKE) profilDocker READER=R2
+	$(MAKE) profilDocker READER=R2Bis
 	$(MAKE) profilDocker READER=R3
+	$(MAKE) profilDocker READER=R3Bis
 
 initDocker:
 	docker build -t 1brc-2024 .
@@ -29,3 +32,4 @@ measureDocker:
 profilDocker:
 	docker run -v $$(pwd):/app 1brc-2024 bash -c "go run read.go $(READER) > /dev/null"
 	docker run -v $$(pwd):/app 1brc-2024 bash -c "echo \"png\" | go tool pprof cpu.profil"
+	mv profile001.png profile_$(READER).png

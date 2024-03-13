@@ -1,12 +1,21 @@
 package reader
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"sort"
 )
 
 func readOneByte(r io.Reader) byte {
+	buf, ok := r.(*bufio.Reader)
+	if ok {
+		b, err := buf.ReadByte()
+		if err != nil {
+			return 0
+		}
+		return b
+	}
 	b := make([]byte, 1, 1)
 	_, err := r.Read(b)
 	if err != nil {
